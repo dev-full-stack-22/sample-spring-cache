@@ -47,10 +47,11 @@ public class TestController {
 	}
 
 	@PostMapping("/users")
-	public String createUser(@Valid @RequestBody UserDTO userDto) {
+	public ResponseEntity<UserDTO> createUser(@Valid @RequestBody UserDTO userDto) {
 		log.debug("userDto: {}", userDto);
-		userRepository.save(new User(userDto));
-		return "success";
+		User user = new User(userDto);
+		userRepository.save(user);
+		return new ResponseEntity<UserDTO>(user.toDTO(), HttpStatus.OK);
 	}
 
 	@PutMapping("/users/{userId}")
