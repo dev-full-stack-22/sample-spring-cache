@@ -1,5 +1,5 @@
 # sample-dev-project
-A sample Spring Boot dev project to test and bootstrap your concept
+A sample Spring Boot dev project to test the Cache Configuration
 
 The following dependencies are included in the project
 - spring-boot-starter-web
@@ -8,4 +8,4 @@ The following dependencies are included in the project
 - lombok
 - spring-boot-starter-test
 - spring-boot-devtools
-- spring-boot-starter-validation
+- spring-boot-starter-cache
