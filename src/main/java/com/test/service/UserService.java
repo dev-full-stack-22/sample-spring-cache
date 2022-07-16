@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.test.dto.UserDTO;
@@ -20,11 +23,10 @@ public class UserService {
 	@Autowired
 	UserRepository userRepository;
 
-	public UserDTO craeteUser(UserDTO userDto) {
-		log.debug("UserService >> userDto: {}", userDto);
-		User user = new User(userDto);
-		userRepository.save(user);
-		return user.toDTO();
+	@Cacheable(value = UserDTO.HASH_KEY, key = "#userId")
+	public UserDTO getUser(int userId) throws ResourceNotFoundException {
+		log.debug("UserService >> get user with id: {}", userId);
+		return userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException()).toDTO();
 	}
 
 	public List<UserDTO> getAllUsers() {
@@ -34,6 +36,15 @@ public class UserService {
 		return userDtoList;
 	}
 
+	@CachePut(value = UserDTO.HASH_KEY, key = "#result.id")
+	public UserDTO craeteUser(UserDTO userDto) {
+		log.debug("UserService >> userDto: {}", userDto);
+		User user = new User(userDto);
+		userRepository.save(user);
+		return user.toDTO();
+	}
+
+	@CachePut(value = UserDTO.HASH_KEY, key = "#userId")
 	public UserDTO updateUser(int userId, UserDTO userDto) throws ResourceNotFoundException {
 		log.debug("UserService >> Update user : {}", userDto);
 		User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException());
@@ -44,11 +55,7 @@ public class UserService {
 		return user.toDTO();
 	}
 
-	public UserDTO getUser(int userId) throws ResourceNotFoundException {
-		log.debug("UserService >> get user with id: {}", userId);
-		return userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException()).toDTO();
-	}
-
+	@CacheEvict(value = UserDTO.HASH_KEY, key = "#userId")
 	public void deleteUser(int userId) {
 		log.debug("UserService >> delete user with id: {}", userId);
 		userRepository.deleteById(userId);

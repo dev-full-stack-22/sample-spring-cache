@@ -16,6 +16,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserDTO {
 
+	public static final String HASH_KEY = "USER_DTO";
+
 	@JsonProperty("id")
 	private Integer id;
 
