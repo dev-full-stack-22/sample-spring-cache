@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,6 +53,13 @@ public class TestController {
 			throws ResourceNotFoundException {
 		log.debug("Controller > Inside updateUser()");
 		return new ResponseEntity<UserDTO>(userService.updateUser(userId, userDto), HttpStatus.OK);
+	}
+
+	@DeleteMapping("/users/{userId}")
+	public ResponseEntity<String> deleteUser(@PathVariable("userId") int userId) {
+		log.debug("Controller -> Inside deleteUser()");
+		userService.deleteUser(userId);
+		return new ResponseEntity<String>("Delete Success", HttpStatus.OK);
 	}
 
 }

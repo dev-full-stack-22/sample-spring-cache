@@ -49,4 +49,9 @@ public class UserService {
 		return userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException()).toDTO();
 	}
 
+	public void deleteUser(int userId) {
+		log.debug("UserService >> delete user with id: {}", userId);
+		userRepository.deleteById(userId);
+	}
+
 }
