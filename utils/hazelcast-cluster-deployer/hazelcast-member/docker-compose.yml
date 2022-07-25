@@ -1,0 +1,23 @@
+version: "3"
+services:
+  hazelcast:
+    container_name: hazelcast
+    image: hazelcast/hazelcast:latest
+    restart: always
+    ports:
+      - 5701:5701
+    environment:
+      - HZ_NETWORK_PUBLICADDRESS=${HZ_NETWORK_PUBLICADDRESS}
+      - JAVA_OPTS=${JAVA_OPTS}
+      - HZ_CLUSTERNAME=${HZ_CLUSTERNAME}
+      - TZ=${TZ}
+      - HAZELCAST_CONFIG=hazelcast.yml
+    volumes:
+      - './hazelcast.yaml:/opt/hazelcast/hazelcast.yml'
+    networks:
+      - hz-network
+networks:
+  hz-network:
+    external: false
+    name: hz-network
+ 

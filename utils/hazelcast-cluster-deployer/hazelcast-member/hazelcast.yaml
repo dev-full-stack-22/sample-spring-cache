@@ -1,0 +1,10 @@
+hazelcast:
+  network:
+    join:
+      multicast: 
+        enabled: false
+      tcp-ip: 
+        enabled: true
+        member-list: 
+          - <member1_ip_address>:5701
+          - <member2_ip_address>:5701

@@ -1,0 +1,20 @@
+version: "3"
+services:
+  management-center:
+    container_name: hazelcast_mc
+    image: hazelcast/management-center:latest
+    restart: always
+    volumes:
+      - "./data:/data"
+    environment:
+      - MC_INIT_CMD=./bin/mc-conf.sh
+      - TZ=${TZ}        
+    ports:
+      - ${MANAGEMENT_CENTER_PORT}:8080
+    networks:
+      - hz-network
+networks:
+  hz-network:
+    external: true
+    name: hz-network
+ 
